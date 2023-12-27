@@ -3,13 +3,16 @@
 require('dotenv').config();
 
 const axios = require('axios');
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 
 client.on('ready', () => {
     console.log('bot is ready');
+    client.user.setActivity('봇이 동작하고 있습니다!');
 })
+
+// client.login(TOKEN);
 
 client.on('messageCreate', async (message) => {
     if (message.content === 'ping') {
