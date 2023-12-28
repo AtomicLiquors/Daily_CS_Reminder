@@ -42,7 +42,7 @@ client.once(Events.ClientReady, (x) => {
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n입실 체크하세요!`);
     else if(hours === 18 && minutes === 0)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n퇴실 체크하세요!`);
-    else if(hours === 10 && (minutes === 15 || minutes === 20))
+    else if(hours === 10 && (minutes === 40 || minutes === 50))
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n테스트 완료!`);
   });
 });
