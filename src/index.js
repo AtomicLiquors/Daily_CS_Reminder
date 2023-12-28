@@ -35,6 +35,7 @@ client.once(Events.ClientReady, (x) => {
 
   //TO-DO : 공휴일 로직 추가하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
+  /*
   cron.schedule("* * * * *", function () {
     currentDate = new Date();
     const weekday = weekdayFormatter.format(currentDate);
@@ -52,6 +53,7 @@ client.once(Events.ClientReady, (x) => {
     else if(hours === 18 && minutes === 0)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n퇴실 체크하세요!`);
   });
+  */
 });
 
 /* 메시지에 답장하는 로직 */
