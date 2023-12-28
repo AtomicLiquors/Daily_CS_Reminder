@@ -1,5 +1,3 @@
-// Watch my Discord Bot Project Tutorial video here: https://youtu.be/pDQAn18-2go - Discord Bot Tutorial | JavaScript & Node.js
-
 require("dotenv").config();
 const cron = require("node-cron");
 
@@ -11,6 +9,7 @@ const {
   PermissionsBitField,
   Permissions,
 } = require("discord.js");
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -21,6 +20,7 @@ const client = new Client({
 
 
 const timeOptions = { timeZone: "Asia/Seoul", hour12: false };
+const weekdayFormatter = new Intl.DateTimeFormat("en-US", { ...timeOptions, weekday: "narrow" });
 const hourFormatter = new Intl.DateTimeFormat("en-US", { ...timeOptions, hour: "numeric" });
 const minuteFormatter = new Intl.DateTimeFormat("ko-KR", { ...timeOptions, minute: "numeric" });
 
@@ -31,19 +31,26 @@ client.once(Events.ClientReady, (x) => {
 
   const channel = client.channels.cache.get(process.env.CHANNEL_ID);
   const currentDate = new Date();
-  channel.send("봇이 업데이트되었습니다! " + currentDate.toLocaleString("ko-KR"));
+  channel.send(currentDate.toLocaleString("ko-KR") + "알림봇 준비 완료!");
 
+  //TO-DO : 공휴일 로직 추가하기.
+  //TO-DO : CRON 최적화할 방법 더 알아보기.
   cron.schedule("* * * * *", function () {
     const currentDate = new Date();
+    const weekday = weekdayFormatter.format(currentDate);
+    
+    if(weekday === "S") 
+      return;
+
     const hours = Number(hourFormatter.format(currentDate));
     const minutes = Number(minuteFormatter.format(currentDate));
 
-    if(hours === 8 && minutes === 30)
+    if(hours === 7 && minutes === 30)
+      channel.send(`${currentDate.toLocaleString("ko-KR")}\n오늘의 CS 퀴즈를 출제해주세요!`);
+    else if(hours === 8 && minutes === 30)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n입실 체크하세요!`);
     else if(hours === 18 && minutes === 0)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n퇴실 체크하세요!`);
-    else if(hours === 10 && (minutes === 40 || minutes === 50))
-      channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n테스트 완료!`);
   });
 });
 
