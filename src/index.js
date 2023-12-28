@@ -31,7 +31,7 @@ client.once(Events.ClientReady, (x) => {
 
   const channel = client.channels.cache.get(process.env.CHANNEL_ID);
   const currentDate = new Date();
-  channel.send(currentDate.toLocaleString("ko-KR") + "알림봇 준비 완료!");
+  channel.send(currentDate.toLocaleString("ko-KR") + "\n알림봇 준비 완료!");
 
   //TO-DO : 공휴일 로직 추가하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
