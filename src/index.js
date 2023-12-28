@@ -37,20 +37,20 @@ client.once(Events.ClientReady, (x) => {
     const hours = Number(hourFormatter.format(currentDate));
     const minutes = Number(minuteFormatter.format(currentDate));
 
-    console.log(hours);
-    console.log(minutes);
-
     if(hours === 8 && minutes === 30)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n입실 체크하세요!`);
     else if(hours === 18 && minutes === 0)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n퇴실 체크하세요!`);
+    else if(hours === 10 && minutes === 7)
+      channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n테스트 완료!`);
   });
 });
 
 /* 메시지에 답장하는 로직 */
 client.on(Events.MessageCreate, (msg) => {
   if (msg.author.bot) return;
-  msg.channel.send('메시지에 응답합니다.');
+  if(msg.content === 'RUTHERE')
+  msg.channel.send('알림봇이 동작하고 있어요!');
 });
 
 client.login(process.env.DISCORD_BOT_ID);
