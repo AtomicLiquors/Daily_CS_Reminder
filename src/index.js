@@ -30,7 +30,8 @@ client.once(Events.ClientReady, (x) => {
   client.user.setActivity("동작");
 
   const channel = client.channels.cache.get(process.env.CHANNEL_ID);
-  channel.send("봇 ON!");
+  const currentDate = new Date();
+  channel.send("봇이 업데이트되었습니다! " + currentDate.toLocaleString("ko-KR"));
 
   cron.schedule("* * * * *", function () {
     const currentDate = new Date();
@@ -41,7 +42,7 @@ client.once(Events.ClientReady, (x) => {
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n입실 체크하세요!`);
     else if(hours === 18 && minutes === 0)
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n퇴실 체크하세요!`);
-    else if(hours === 10 && minutes === 7)
+    else if(hours === 10 && (minutes === 15 || minutes === 20))
       channel.send(`현재 시간은 ${hours}시 ${minutes}분입니다.\n테스트 완료!`);
   });
 });
