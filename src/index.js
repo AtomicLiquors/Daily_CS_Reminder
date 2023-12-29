@@ -52,7 +52,7 @@ app.listen(PORT, () => {
 
 
 const holidays = [];
-initHolidays();
+initHolidays(holidays);
 
 client.once(Events.ClientReady, (x) => {
   console.log(`${x.user.tag} is ready`);
@@ -71,7 +71,7 @@ client.once(Events.ClientReady, (x) => {
     console.log(currentDate.toLocaleString(
       "ko-KR"
     ));
-    
+
     const weekday = weekdayFormatter.format(currentDate);
     const [month, day, hours, minutes] = getDateValuesFrom(currentDate);
     
@@ -141,7 +141,7 @@ function getDateValuesFrom(date){
   ];
 }
 
-function initHolidays(){
+function initHolidays(holidays){
   holidays[1][1] = "☀️2024년 새해가 밝았습니다!☀️\n새해에도 다함께 파이팅! 🎉🎉"
   holidays[2][9] = "🎊오늘은 설 연휴 시작입니다.🎊\n즐거운 명절 되세요!"
 }
