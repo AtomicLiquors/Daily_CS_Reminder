@@ -54,6 +54,8 @@ app.listen(PORT, () => {
 const holidays = [];
 initHolidays(holidays);
 
+let month, day, hours, minutes;
+
 client.once(Events.ClientReady, (x) => {
   console.log(`${x.user.tag} is ready`);
   client.user.setActivity("동작");
@@ -61,30 +63,26 @@ client.once(Events.ClientReady, (x) => {
   const channel = client.channels.cache.get(process.env.CHANNEL_ID);
 
   let currentDate;
-  currentDate = getDate();
 
   //TO-DO : 공휴일 로직 추가하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
-  cron.schedule("* * * * *", function () {
-    currentDate = getDate();
+  cron.schedule("* * * * *", () => {
+    currentDate = createDate();
 
-    console.log(currentDate.toLocaleString(
-      "ko-KR"
-    ));
 
     const weekday = weekdayFormatter.format(currentDate);
-    const [month, day, hours, minutes] = getDateValuesFrom(currentDate);
+    [month, day, hours, minutes] = getDateValuesFrom(currentDate);
+
+    console.log(`${month}월 ${day}일 ${hours}시 ${minutes}분`);
     
-    if(hours === 0 && minutes === 0 && month == 1 && day == 1)
+    if(hours === 23 && minutes === 59 && month == 12 && day == 31)
       channel.send(
         `${currentDate.toLocaleString(
           "ko-KR"
-        )}\n${holidays[1][1]}`
+        )}\n2023년 한 해 동안 고생하셨습니다!\n새해에도 다함께 파이팅! 🎉🎉`
       );
     else if (hours === 7 && minutes === 30) {
-      if (holidays[month][day])
-        return;
-      else if (weekday === "S")
+      if (weekday === "S")
         channel.send(
           `${currentDate.toLocaleString(
             "ko-KR"
@@ -127,15 +125,16 @@ function initOffsetHour(){
   return (seoulOffset - serverOffset) / 60;
 }
 
-function getDate(){
+function createDate(){
   const date = new Date();
-  return date.setHours(date.getHours() + utcOffsetHours);
+  date.setHours(date.getHours() + utcOffsetHours);
+  return date;
 }
 
 function getDateValuesFrom(date){
   return [
     date.getMonth() + 1,
-    date.getDay(),
+    date.getDate(),
     date.getHours(),
     date.getMinutes(),
   ];
