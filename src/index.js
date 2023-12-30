@@ -81,14 +81,8 @@ client.once(Events.ClientReady, (x) => {
         )}\n2023년 한 해 동안 고생하셨습니다!\n새해에도 다함께 파이팅! 🎉🎉`
       );
     else if (hours === 7 && minutes === 30) {
-      if(holidays[month][day])
+      if(weekday === "S" || holidays[month][day])
         return;
-      if (weekday === "S")
-        channel.send(
-          `${currentDate.toLocaleString(
-            "ko-KR"
-          )}\n오늘은 주말입니다. 즐거운 주말 되세요!`
-        );
       else
         channel.send(
           `${currentDate.toLocaleString(
