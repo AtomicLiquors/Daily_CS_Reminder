@@ -36,7 +36,7 @@ const weekdayFormatter = new Intl.DateTimeFormat("en-US", {
   weekday: "narrow",
 });
 
-const utcOffsetHours = initOffsetHour();
+const utcOffsetHours = 9;
 
 /* 헬스 체크 엔드포인트 */
 const app = express();
@@ -115,7 +115,7 @@ client.on(Events.MessageCreate, (msg) => {
 
 client.login(process.env.DISCORD_BOT_ID);
 
-
+/*
 function initOffsetHour(){
   let initDate = new Date();
   
@@ -124,6 +124,7 @@ function initOffsetHour(){
 
   return (seoulOffset - serverOffset) / 60;
 }
+*/
 
 function createDate(){
   const date = new Date();
