@@ -63,7 +63,6 @@ client.once(Events.ClientReady, (x) => {
   const channel = client.channels.cache.get(process.env.CHANNEL_ID);
 
   let currentDate;
-
   //TO-DO : 공휴일 로직 추가하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
   cron.schedule("* * * * *", () => {
@@ -74,7 +73,7 @@ client.once(Events.ClientReady, (x) => {
     [month, day, hours, minutes] = getDateValuesFrom(currentDate);
 
     console.log(`${month}월 ${day}일 ${hours}시 ${minutes}분`);
-    
+
     if(hours === 23 && minutes === 59 && month == 12 && day == 31)
       channel.send(
         `${currentDate.toLocaleString(
@@ -82,6 +81,8 @@ client.once(Events.ClientReady, (x) => {
         )}\n2023년 한 해 동안 고생하셨습니다!\n새해에도 다함께 파이팅! 🎉🎉`
       );
     else if (hours === 7 && minutes === 30) {
+      if(holidays[month][day])
+        return;
       if (weekday === "S")
         channel.send(
           `${currentDate.toLocaleString(
