@@ -51,10 +51,20 @@ app.listen(PORT, () => {
 });
 
 
+/* 휴일 관리 */
 const holidays = [];
 initHolidays(holidays);
-
 let month, day, hours, minutes;
+
+
+const defaultMeeting = {
+  weekday: "F",
+  hour: 18,
+  minute: 0,
+  modified: false
+}
+
+const meetingInfo = {...defaultMeeting};
 
 client.once(Events.ClientReady, (x) => {
   console.log(`${x.user.tag} is ready`);
@@ -63,25 +73,40 @@ client.once(Events.ClientReady, (x) => {
   const channel = client.channels.cache.get(process.env.CHANNEL_ID);
 
   let currentDate;
-  //TO-DO : 공휴일 로직 추가하기.
+  //TO-DO : 공휴일 추가 구현하기.
+  //TO-DO : 화상회의 일자 변경 구현하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
   cron.schedule("* * * * *", () => {
     currentDate = createDate();
-
 
     const weekday = weekdayFormatter.format(currentDate);
     [month, day, hours, minutes] = getDateValuesFrom(currentDate);
 
     console.log(`${month}월 ${day}일 ${hours}시 ${minutes}분`);
 
-    if(hours === 23 && minutes === 59 && month == 12 && day == 31)
-      channel.send(
-        `${currentDate.toLocaleString(
-          "ko-KR"
-        )}\n2023년 한 해 동안 고생하셨습니다!\n새해에도 다함께 파이팅! 🎉🎉`
-      );
-    else if (hours === 7 && minutes === 30) {
-      if(weekday === "S" || holidays[month][day])
+    //weekday string으로 표기하는 건 Tuesday랑 Thursday가 겹친다.
+
+    if(weekday === meetingInfo.weekday){
+      if (hours === 7 && minutes === 30) {
+        channel.send(
+          `${currentDate.toLocaleString(
+            "ko-KR"
+          )}
+          \n오늘은 화상회의 날입니다.
+          \n발표, 퀴즈를 준비해 주시고
+          \n${meetingInfo.hour}시 ${meetingInfo.minute}분에 만나요!`
+        );
+      } else if (hours === meetingInfo.hour && minutes === meetingInfo.minute){
+        channel.send(
+          `${hours}시 ${minutes}분입니다.
+          \n음성 채널로 접속해 주세요!`
+        );
+      }
+    } else if (hours === 7 && minutes === 30) {
+      if(weekday === "S")
+      //To-Do : 주말 한정으로 미팅 일정 초기값으로 되돌리기.
+        return;
+      else if(holidays[month][day])
         return;
       else
         channel.send(
@@ -110,17 +135,6 @@ client.on(Events.MessageCreate, (msg) => {
 
 client.login(process.env.DISCORD_BOT_ID);
 
-/*
-function initOffsetHour(){
-  let initDate = new Date();
-  
-  const seoulOffset = initDate.getTimezoneOffset('ko-KR');
-  const serverOffset = initDate.getTimezoneOffset();
-
-  return (seoulOffset - serverOffset) / 60;
-}
-*/
-
 function createDate(){
   const date = new Date();
   date.setHours(date.getHours() + utcOffsetHours);
@@ -144,3 +158,6 @@ function initHolidays(holidays){
   holidays[1][1] = "☀️2024년 새해가 밝았습니다!☀️\n새해에도 다함께 파이팅! 🎉🎉"
   holidays[2][9] = "🎊오늘은 설 연휴 시작입니다.🎊\n즐거운 명절 되세요!"
 }
+
+
+//To-Do : 코드 쪼개기
