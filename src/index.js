@@ -76,6 +76,8 @@ client.once(Events.ClientReady, (x) => {
   //TO-DO : 공휴일 추가 구현하기.
   //TO-DO : 화상회의 일자 변경 구현하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
+
+  //TO-DO : CRON 로직 시간 기다리지 않고 테스트할 방법 알아보기.
   cron.schedule("* * * * *", () => {
     currentDate = createDate();
 
