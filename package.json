@@ -2,15 +2,16 @@
   "name": "daily_cs_quiz_bot",
   "version": "1.0.2",
   "description": "discord bot for daily cs quiz channel",
-  "main": "dist/bot.js",
+  "main": "dist/index.mjs",
   "scripts": {
     "test": "jest",
-    "start": "node dist/index.js",
-    "build": "node esbuild.config.mjs"
+    "start": "node dist/index.mjs",
+    "build": "node esbuild.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "@babel/cli": "^7.23.4",
     "@babel/core": "^7.23.7",
