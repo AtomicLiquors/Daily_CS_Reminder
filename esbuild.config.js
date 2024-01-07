@@ -5,4 +5,5 @@ build({
   bundle: true,
   outfile: './dist/index.js',
   platform: "node",
+  format: 'esm', 
 });
