@@ -1,5 +1,7 @@
+
+
 function checkChannel(){
-    if(!channel) return;
+    if(!channel) throw new Error("채널을 확인할 수 없습니다.");
 } 
 
 export function sendDailyMorningNotification(date){
@@ -31,10 +33,18 @@ export function sendMeetingImminentNotification(hours, minutes){
       );
 }
 
-export function sendFirstDayOfWeekNotification(){
+export function sendFirstDayOfWeekNotification(month, weeks){
     checkChannel();
     channel.send(
-        `이번 주의 출제 순서를 정해주세요!
-        \n이번 주의 발표 주제를 정해주세요!`
+        `🔥 ${month}월 ${weeks}주차 CS 스터디입니다 🔥
+        \n- 출제 순서를 정해주세요! (봇에 아직 해당 기능이 없습니다.)
+        \n- 각 멤버는 이번 주의 발표 주제를 정해주세요!`
+      );
+}
+
+export function sendTestNotification(){
+    checkChannel();
+    channel.send(
+       `테스트 메시지입니다.`
       );
 }
