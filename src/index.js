@@ -2,18 +2,21 @@
 import * as holidayUtil from "./holidayUtil.js";
 import * as dateTimeReader from "./dateTimeReader.js";
 
-const express = require("express");
-require("dotenv").config();
-const cron = require("node-cron");
+import express from "express";
+import cron from "node-cron";
+import dotenv from 'dotenv';
+dotenv.config();
 
-const {
+//import pkg from "discord.js"
+import {
   Client,
   GatewayIntentBits,
   Events,
-  EmbedBuilder,
+  /*EmbedBuilder,
   PermissionsBitField,
-  Permissions,
-} = require("discord.js");
+  Permissions,*/
+} from 'discord.js';
+
 
 const client = new Client({
   intents: [
@@ -73,7 +76,6 @@ client.once(Events.ClientReady, (x) => {
 
   global.channel = client.channels.cache.get(process.env.CHANNEL_ID);
 
-  let currentDate;
   //TO-DO : 공휴일 추가 구현하기.
   //TO-DO : 화상회의 일자 변경 구현하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
@@ -88,7 +90,7 @@ client.once(Events.ClientReady, (x) => {
 client.on(Events.MessageCreate, (msg) => {
   if (msg.author.bot) return;
   if (msg.content === "RUTHERE") {
-    currentDate = new Date();
+    let currentDate = new Date();
 
     msg.channel.send(
       `알림봇이 동작하고 있어요!\n현재 시간 : ${new Intl.DateTimeFormat(
