@@ -1,6 +1,8 @@
 
 import * as holidayUtil from "./holidayUtil.js";
+import * as dateUtil from "./dateUtil.js";
 import * as dateTimeReader from "./dateTimeReader.js";
+import * as notifier from "./notifier.js";
 
 import express from "express";
 import cron from "node-cron";
@@ -80,8 +82,12 @@ client.once(Events.ClientReady, (x) => {
   //TO-DO : 화상회의 일자 변경 구현하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
 
+
+  let currentDate = dateUtil.createDate();
+
   cron.schedule("* * * * *", () => {
-    dateTimeReader.read(dateHandler.createDate());
+    let currentDate = dateUtil.createDate();
+    dateTimeReader.read(currentDate);
   });
 });
 
@@ -102,3 +108,4 @@ client.on(Events.MessageCreate, (msg) => {
 });
 
 client.login(process.env.DISCORD_BOT_ID);
+
