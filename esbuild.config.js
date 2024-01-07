@@ -6,4 +6,5 @@ build({
   outfile: './dist/index.js',
   platform: "node",
   format: 'esm', 
+  external: ['path'],
 });
