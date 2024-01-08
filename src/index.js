@@ -82,8 +82,6 @@ client.once(Events.ClientReady, (x) => {
   //TO-DO : CRON 최적화할 방법 더 알아보기.
 
 
-  let currentDate = dateUtil.createDate();
-
   cron.schedule("* * * * *", () => {
     let currentDate = dateUtil.createDate();
     dateTimeReader.read(currentDate);
