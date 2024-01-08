@@ -7,7 +7,6 @@ import cron from "node-cron";
 import dotenv from 'dotenv';
 dotenv.config();
 
-//import pkg from "discord.js"
 import {
   Client,
   GatewayIntentBits,
