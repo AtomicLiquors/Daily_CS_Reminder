@@ -29,7 +29,7 @@ export async function read(currentDate) {
       await runIfFirstDayOfWeek(currentDate);
       
       isMeetingDay()
-      ? notifier.sendMeetingMorningNotification(currentDate, hours, minutes)
+      ? notifier.sendMeetingMorningNotification(currentDate, meetingInfo.hour, meetingInfo.minute)
       : notifier.sendDailyMorningNotification(currentDate)
 
     }
