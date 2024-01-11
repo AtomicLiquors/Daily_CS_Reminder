@@ -1,3 +1,4 @@
+import { shuffleAndTellOrder } from "./manager/memberOrderManager.js";
 
 
 function checkChannel(){
@@ -33,11 +34,13 @@ export function sendMeetingImminentNotification(hours, minutes){
       );
 }
 
-export function sendFirstDayOfWeekNotification(month, weeks){
+export async function sendFirstDayOfWeekNotification(month, weeks){
     checkChannel();
+    const order = await shuffleAndTellOrder();
     channel.send(
         `🔥 ${month}월 ${weeks}주차 CS 스터디입니다 🔥
-        \n- 출제 순서를 정해주세요! (봇에 아직 해당 기능이 없습니다.)
+        \n- 이번 주의 출제 순서 : 
+        \n  [ ${order} ]
         \n- 각 멤버는 이번 주의 발표 주제를 정해주세요!`
       );
 }

@@ -4,7 +4,7 @@ import * as notifier from "./notifier.js";
 let month, day, hours, minutes, weekday;
 let firstDayOfWeek = "월";
 
-export function read(currentDate) {
+export async function read(currentDate) {
 
     [month, day, hours, minutes, weekday] = dateUtil.getDateValuesFrom(currentDate);
 
@@ -26,7 +26,7 @@ export function read(currentDate) {
     }
 
     if (isTimeToBegin()) {
-      runIfFirstDayOfWeek(currentDate);
+      await runIfFirstDayOfWeek(currentDate);
       
       isMeetingDay()
       ? notifier.sendMeetingMorningNotification(currentDate, hours, minutes)
@@ -47,9 +47,9 @@ const isMeetingDay = () => {
   return weekday === meetingInfo.weekday
 }
 
-const runIfFirstDayOfWeek = (currentDate) => {
+const runIfFirstDayOfWeek = async (currentDate) => {
   if (weekday === firstDayOfWeek) {
-    notifier.sendFirstDayOfWeekNotification(month, getWeeks(currentDate));
+    await notifier.sendFirstDayOfWeekNotification(month, getWeeks(currentDate));
   }
 }
 

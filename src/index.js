@@ -1,31 +1,18 @@
-
 import * as holidayUtil from "./holidayUtil.js";
 import * as dateUtil from "./dateUtil.js";
 import * as dateTimeReader from "./dateTimeReader.js";
 import * as notifier from "./notifier.js";
+import { client } from "./clientSetup.js";
+
+import { shuffleAndTellOrder } from "./manager/memberOrderManager.js";
+
 
 import express from "express";
 import cron from "node-cron";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-import {
-  Client,
-  GatewayIntentBits,
-  Events,
-  /*EmbedBuilder,
-  PermissionsBitField,
-  Permissions,*/
-} from 'discord.js';
-
-
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-  ],
-});
+import { Events } from "discord.js";
 
 const fullTimeOptions = {
   weekday: "long",
@@ -61,7 +48,7 @@ global.holidays = [];
 holidayUtil.initHolidays(holidays);
 holidayUtil.addInitialHolidays(holidays);
 
-
+/* 미팅 관리 */
 const defaultMeeting = {
   weekday: "금",
   hour: 18,
@@ -71,16 +58,16 @@ const defaultMeeting = {
 
 global.meetingInfo = { ...defaultMeeting };
 
+
 client.once(Events.ClientReady, (x) => {
   console.log(`${x.user.tag} is ready`);
   client.user.setActivity("동작");
 
   global.channel = client.channels.cache.get(process.env.CHANNEL_ID);
-
+  
   //TO-DO : 공휴일 추가 구현하기.
   //TO-DO : 화상회의 일자 변경 구현하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
-
 
   cron.schedule("* * * * *", () => {
     let currentDate = dateUtil.createDate();
@@ -104,5 +91,11 @@ client.on(Events.MessageCreate, (msg) => {
   }
 });
 
-client.login(process.env.DISCORD_BOT_ID);
+client.on(Events.GuildMemberAdd, (x) => {
+  channel.send(
+    '새 멤버가 추가되었습니다! 관련 로직을 구현해주세요.'
+  );
+  console.log(x);
+})
 
+client.login(process.env.DISCORD_BOT_ID);
