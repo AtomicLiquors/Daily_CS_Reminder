@@ -10,17 +10,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { Events } from "discord.js";
-
-const fullTimeOptions = {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-  timeZone: "Asia/Seoul",
-};
+import { handleSlashCommand } from "./handler/slashCommandHandler.js";
 
 /* 헬스 체크 엔드포인트 */
 const app = express();
@@ -36,6 +26,12 @@ app.listen(PORT, () => {
 
 /* 휴일 관리 */
 global.holidays = [];
+global.meetingInfo = {
+    weekday: "금",
+    hour: 18,
+    minute: 0,
+    modified: false,
+};
 holidayUtil.initHolidays(holidays);
 holidayUtil.addInitialHolidays(holidays);
 
@@ -59,19 +55,19 @@ client.once(Events.ClientReady, (x) => {
   });
 });
 
+client.on(Events.InteractionCreate, (interaction) =>{
+  if(!interaction.isChatInputCommand()) return;
+
+  handleSlashCommand(interaction);
+})
+
 /* 메시지에 답장하는 로직 */
-// replier로 옮기기.
 /*
 client.on(Events.MessageCreate, (msg) => {
   if (msg.author.bot) return;
-  if (msg.content === "RUTHERE") {
-    let currentDate = new Date();
-
+  if (msg.content === "") {
+    
     msg.channel.send(
-      `알림봇이 동작하고 있어요!\n현재 시간 : ${new Intl.DateTimeFormat(
-        "ko-KR",
-        fullTimeOptions
-      ).format(currentDate)}`
     );
   }
 });

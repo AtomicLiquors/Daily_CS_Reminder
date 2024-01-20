@@ -23,7 +23,7 @@ const commands = [
 			},
 			{
 				name: '시',
-				description: '0 ~ 24로 입력해 주세요.',
+				description: '0 ~ 23으로 입력해 주세요.',
 				type: ApplicationCommandOptionType.Number,
 				required: true
 			},
