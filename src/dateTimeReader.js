@@ -1,5 +1,6 @@
 import * as dateUtil from "./dateUtil.js";
 import * as notifier from "./notifier.js";
+import * as meetingManager from './manager/meetingManager.js';
 
 let month, day, hours, minutes, weekday;
 let firstDayOfWeek = "월";
@@ -15,7 +16,7 @@ export async function read(currentDate) {
     }
     else if (weekday === "토" || weekday === "일") {
       if (meetingInfo.modified === true) {
-        meetingInfo = { ...defaultMeeting };
+        meetingManager.setMeetingToDefault();
       }
       return;
     }
@@ -30,21 +31,21 @@ export async function read(currentDate) {
       
       isMeetingDay()
       ? notifier.sendMeetingMorningNotification(currentDate, meetingInfo.hour, meetingInfo.minute)
-      : notifier.sendDailyMorningNotification(currentDate)
+      : notifier.sendDailyMorningNotification(currentDate);
 
     }
 }
 
 const isTimeToBegin = () => {
-  return hours === 7 && minutes === 30
+  return hours === 7 && minutes === 30;
 }
 
 const isTimeToMeet = () => {
-  return hours === meetingInfo.hour && minutes === meetingInfo.minute
+  return hours === meetingInfo.hour && minutes === meetingInfo.minute;
 }
 
 const isMeetingDay = () => {
-  return weekday === meetingInfo.weekday
+  return weekday === meetingInfo.weekday;
 }
 
 const runIfFirstDayOfWeek = async (currentDate) => {
