@@ -1,5 +1,5 @@
 //To-Do : "서버 위치에 따라 시차 유동적으로 바꿀 것.
-const utcOffsetHours = 0;
+const utcOffsetHours = 9;
 
 const weekday = {
     0: "일",

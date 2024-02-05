@@ -36,12 +36,6 @@ holidayUtil.initHolidays(holidays);
 holidayUtil.addInitialHolidays(holidays);
 
 
-const task = cron.schedule("* * * * *", () => {
-  let currentDate = dateUtil.createDate();
-  dateTimeReader.read(currentDate);
-}, {
-  timezone: "Asia/Seoul"
-});
 
 client.once(Events.ClientReady, (x) => {
   console.log(`${x.user.tag} is ready`);
@@ -52,16 +46,14 @@ client.once(Events.ClientReady, (x) => {
   setSlashCommands();
   
   //TO-DO : 공휴일 추가 구현하기.
+  //TO-DO : 화상회의 일자 변경 구현하기.
   //TO-DO : CRON 최적화할 방법 더 알아보기.
-  task.start();
-});
 
-const rest = (time) => {
-  task.stop();
-  setTimeout(() => {
-    task.start();
-  }, time)
-}
+  cron.schedule("* * * * *", () => {
+    let currentDate = dateUtil.createDate();
+    dateTimeReader.read(currentDate);
+  });
+});
 
 client.on(Events.InteractionCreate, (interaction) =>{
   if(!interaction.isChatInputCommand()) return;
